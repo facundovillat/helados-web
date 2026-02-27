@@ -317,27 +317,25 @@ main {
    HOME
 ============================ */
 #view-home .hero {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
   align-items: center;
-  text-align: center;
-  padding: 60px 40px;
-  background: radial-gradient(circle at center, #eff6ff 0%, #ffffff 50%, #fef2f2 100%);
+  gap: 60px;
+  padding: 80px 60px;
+  background: radial-gradient(circle at top left, #eff6ff 0%, #ffffff 50%, #fef2f2 100%);
   border-radius: 40px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: var(--shadow-deep);
-  margin-bottom: 20px;
 }
 
 .hero-content {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  max-width: 800px;
+  gap: 24px;
 }
 
 .hero-title {
-  font-size: 3rem;
+  font-size: 3.5rem;
   line-height: 1.1;
   font-weight: 800;
   color: var(--text-main);
@@ -347,12 +345,32 @@ main {
   background: var(--grad-mix);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: block;
 }
 
 .hero-sub {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
   color: var(--text-muted);
+  margin-top: 8px;
+  max-width: 500px;
+}
+
+.hero-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 999px;
+  padding: 8px 16px;
+  background: var(--grad-blue);
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  width: fit-content;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .hero-visual {
@@ -456,16 +474,14 @@ main {
   color: var(--text-main);
   margin: 40px 0 30px;
   position: relative;
-  display: block;
-  text-align: center;
+  display: inline-block;
 }
 
 .section-title::after {
   content: '';
   position: absolute;
   bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 0;
   width: 80px;
   height: 5px;
   background: var(--grad-mix);
@@ -566,20 +582,83 @@ main {
 /* ============================
    CATÁLOGO
 ============================ */
+.catalog-banner {
+  height: 300px;
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  overflow: hidden;
+}
+
+.catalog-banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.6));
+  z-index: 1;
+}
+
+.catalog-banner-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.catalog-banner-logo {
+  width: 160px;
+  height: 160px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.catalog-banner-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.catalog-banner h1 {
+  font-size: 3.5rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+  text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
 .catalog-layout {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 0 40px 40px;
 }
 
 .catalog-sidebar {
   width: 100%;
+  background: #ffffff;
+  padding: 15px 20px;
+  border-radius: 16px;
+  border: 1px solid var(--border-soft);
   position: sticky;
-  top: 140px;
-  z-index: 85;
-  background: var(--bg-page);
-  padding: 10px 0;
+  top: 70px;
+  z-index: 90;
+}
+
+.category-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .category-list {
@@ -598,24 +677,26 @@ main {
 .category-item {
   padding: 10px 20px;
   border-radius: 999px;
-  background: #ffffff;
-  color: var(--text-muted);
+  background: #f1f5f9;
+  font-size: 0.9rem;
   font-weight: 600;
-  transition: all 0.2s;
-  border: 1px solid var(--border-soft);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  gap: 8px;
   white-space: nowrap;
+  transition: all 0.2s;
+  border: 1px solid transparent;
 }
 
 .category-item:hover {
-  background: var(--primary-light);
-  color: var(--primary);
+  background: #e2e8f0;
 }
 
 .category-item.active {
-  background: var(--grad-blue);
+  background: var(--primary);
   color: #ffffff;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
 }
 
 .catalog-products {
@@ -629,6 +710,22 @@ main {
   gap: 20px;
   padding-bottom: 15px;
   border-bottom: 1px solid var(--border-soft);
+}
+
+.catalog-header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.catalog-header-sticky {
+  position: sticky;
+  top: 70px;
+  background: var(--bg-page);
+  z-index: 85;
+  padding: 20px 0;
+  margin-bottom: 0;
 }
 
 .view-title {
@@ -698,9 +795,34 @@ main {
 }
 
 .product-price {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: #111827;
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--primary-dark);
+}
+
+.product-price-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  gap: 10px;
+}
+
+.btn-add-product {
+  background: var(--primary-light);
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-add-product:hover {
+  background: var(--primary);
+  color: #ffffff;
 }
 
 .product-footer {
@@ -1384,6 +1506,32 @@ main {
   margin-top: 4px;
 }
 
+/* Botón flotante de WhatsApp */
+.whatsapp-float {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  width: 60px;
+  height: 60px;
+  background-color: #25d366;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 30px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1) rotate(5deg);
+  background-color: #128c7e;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
 /* ============================
    TOAST / NOTIFICACIÓN
 ============================ */
@@ -1545,39 +1693,30 @@ footer {
 
   /* Catalog Mobile */
   .catalog-banner {
-    height: 180px;
+    height: 200px;
   }
 
   .catalog-banner h1 {
     font-size: 2.2rem;
   }
 
-  .catalog-sidebar {
-    top: 55px;
-    z-index: 95;
-    padding: 10px 0;
+  .catalog-banner-logo {
+    width: 120px;
+    height: 120px;
   }
 
   .catalog-header-sticky {
-    position: relative;
-    top: 0;
+    top: 55px;
     padding: 15px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
-  .category-list {
-    flex-direction: row;
-    overflow-x: auto;
-    padding-bottom: 5px;
-    scrollbar-width: none; /* Firefox */
-  }
-
-  .category-list::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
-  }
-
-  .category-item {
-    white-space: nowrap;
-    padding: 8px 15px;
+  .catalog-sidebar {
+    position: sticky;
+    top: 55px;
+    padding: 10px 0;
   }
 
   .products-grid {
