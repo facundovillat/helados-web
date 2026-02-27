@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Piastri Helados - Canal Mayorista</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="top-bar-left">
+      <div class="logo">
+          <div class="logo-icon">PH</div>
+        <div>
+          <div class="logo-text-title">Piastri Helados</div>
+          <div class="logo-text-sub">Canal mayorista online</div>
+          </div>
+        </div>
+
+        <div class="header-search">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Buscar productos o marcas"
+            disabled
+          />
+        </div>
+      </div>
+
+      <div class="header-cart">
+        <button id="btnGoHome" class="btn-secondary" type="button">
+          <span>Home</span>
+        </button>
+
+        <button id="btnOpenCart" class="btn-cart-header" type="button">
+          <span class="icon">🛒</span>
+          <span>Carrito</span>
+          <span id="cartCountBadge" class="badge-cart-count">0</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <!--
+        Vista 1: HOME
+      -->
+      <section id="view-home" class="fade-in">
+        <div class="hero card">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              Bienvenidos –<br />
+              <span>¿Qué desea comprar?</span>
+            </h1>
+            <p class="hero-sub">
+              Canal oficial para pedidos mayoristas de helados. Elija una marca para
+              ver el catálogo y realizar su pedido.
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn-primary" onclick="document.querySelector('.brands-grid').scrollIntoView({behavior: 'smooth'})">
+                Ver Marcas Disponibles
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="section-title">Marcas disponibles</h2>
+
+        <div class="brands-grid">
+          <!-- Marca 1 -->
+          <article
+            class="brand-card"
+            data-brand-id="monteviana"
+          >
+            <div class="brand-avatar">
+              <img src="src/images/LaMontevideana.png" alt="La Monteviana" />
+            </div>
+            <div class="brand-name">La Monteviana</div>
+            <div class="brand-tag">Helados industriales para mayoristas</div>
+            <div class="brand-footer">
+            </div>
+          </article>
+
+          <!-- Marca 2 -->
+          <article
+            class="brand-card"
+            data-brand-id="otra"
+          >
+            <div class="brand-avatar">
+              <img src="src/images/com-com.svg" alt="Com-Com" />
+            </div>
+            <div class="brand-name">Com-Com</div>
+            <div class="brand-tag">Línea de helados y postres Com-Com</div>
+            <div class="brand-footer">
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!--
+        Vista 2: CATÁLOGO POR MARCA
+      -->
+      <section id="view-catalog" class="hidden">
+        <div class="catalog-banner" id="catalogBanner">
+          <div class="catalog-banner-overlay"></div>
+          <div class="catalog-banner-content">
+            <div class="catalog-banner-logo" id="catalogBannerLogo">
+              <img src="src/images/LaMontevideana.png" alt="Logo Marca" />
+            </div>
+            <h1 id="catalogBannerTitle">PRODUCTOS</h1>
+          </div>
+        </div>
+
+        <div class="view-header catalog-header-sticky">
+          <div>
+            <div class="view-title" id="catalogBrandTitle">
+              Catálogo La Monteviana
+            </div>
+            <div class="view-subtitle" id="catalogBrandSubtitle">
+              Seleccione cantidades y agregue al carrito
+            </div>
+          </div>
+
+          <button id="btnBackToHome" class="btn-secondary" type="button">
+            ← Elegir otra marca
+          </button>
+        </div>
+
+        <div class="catalog-layout">
+          <aside class="catalog-sidebar">
+            <div class="category-list">
+              <button class="category-item active" type="button">
+                <span>Todos</span>
+              </button>
+              <button class="category-item" type="button">
+                <span>Alfajores</span>
+              </button>
+              <button class="category-item" type="button">
+                <span>Helados</span>
+              </button>
+              <button class="category-item" type="button">
+                <span>Postres</span>
+              </button>
+              <button class="category-item" type="button">
+                <span>Tortas</span>
+              </button>
+            </div>
+          </aside>
+
+          <div class="catalog-products">
+            <div class="products-grid" id="productsGrid">
+              <!-- Productos generados por JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        Vista 3: CARRITO
+      -->
+      <section id="view-cart" class="hidden">
+        <div class="view-header">
+          <div>
+            <div class="view-title" id="cartTitle">Carrito</div>
+            
+            <div class="view-subtitle">
+              Revise su pedido antes de continuar
+            </div>
+          </div>
+          <button id="btnCartBackToCatalog" class="btn-secondary" type="button">
+            ← Seguir comprando
+          </button>
+        </div>
+
+        <div class="cart-layout">
+          <!-- Resumen izquierdo -->
+          <div class="cart-summary card-soft">
+            <div class="cart-summary-row">
+              <div>
+                <div class="cart-summary-label">Total</div>
+                <div id="cartSummaryTotal" class="cart-summary-value">$0</div>
+              </div>
+              <div>
+                <div class="cart-summary-label">Faltan</div>
+                <div id="cartSummaryMissing" class="cart-summary-value-muted">$0</div>
+              </div>
+        </div>
+
+            <div class="cart-progress">
+              <div id="cartProgressBar" class="cart-progress-bar"></div>
+            </div>
+            <div class="cart-min-label">
+              Mínimo: <span id="cartMinAmount">$60.000</span>
+          </div>
+
+            <div class="cart-delivery-options">
+              <button class="cart-delivery-btn active" type="button">
+                Entrega a domicilio<br />
+                <span>Min: $60.000</span>
+              </button>
+              <button class="cart-delivery-btn disabled" type="button">
+                Retirar en tienda<br />
+                <span>Min: $10.000</span>
+              </button>
+            </div>
+
+            <div class="cart-summary-footnote">
+              Entrega viernes.<br />
+              <span>Planta Logística - Local</span>
+            </div>
+
+            <button id="btnConfirmOrder" class="btn-primary btn-full" type="button">
+              Confirmar
+            </button>
+
+            <p class="cart-payment-note">
+              Pago contra entrega: efectivo (simulado).
+            </p>
+          </div>
+
+          <!-- Lista derecha -->
+          <div class="cart-items-panel">
+            <div id="cartList" class="cart-list">
+              <!-- Ítems generados por JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!--
+        Vista 3b: DATOS DE CLIENTE (CHECKOUT)
+      -->
+      <section id="view-checkout-data" class="hidden">
+        <div class="view-header">
+          <div>
+            <div class="view-title">Datos del cliente</div>
+            <div class="view-subtitle">
+              Esta información es necesaria para procesar su pedido.
+            </div>
+          </div>
+          <button id="btnCheckoutBackToCart" class="btn-secondary" type="button">
+            ← Volver al carrito
+            </button>
+          </div>
+
+        <div class="card">
+          <form id="checkoutForm" class="checkout-form">
+            <div class="checkout-grid">
+              <div class="field">
+                <label for="firstName">Nombre</label>
+                <input id="firstName" name="firstName" type="text" placeholder="Ej: Juan" required />
+              </div>
+              <div class="field">
+                <label for="lastName">Apellido</label>
+                <input id="lastName" name="lastName" type="text" placeholder="Ej: Pérez" required />
+              </div>
+              <div class="field">
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email" placeholder="Ej: cliente@ejemplo.com" required />
+              </div>
+              <div class="field">
+                <label for="dni">Número de DNI</label>
+                <input id="dni" name="dni" type="text" placeholder="Ej: 30123456" pattern="\d{8}" maxlength="8" required />
+              </div>
+            </div>
+
+            <div class="field" style="margin-top:8px;">
+              <label for="address">Dirección de entrega</label>
+              <input id="address" name="address" type="text" placeholder="Calle, número, piso, barrio" required />
+            </div>
+
+            <p class="checkout-note">
+              En un proyecto real aquí se validan los datos y se envía el pedido al sistema del distribuidor.
+            </p>
+
+            <button class="btn-primary btn-full" type="submit">
+              Continuar a resumen
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!--
+        Vista 4: CONFIRMACIÓN DE PEDIDO
+      -->
+      <section id="view-confirmation" class="hidden">
+        <div class="card">
+          <div class="view-title" style="margin-bottom:4px;">Pedido confirmado</div>
+          <p class="view-subtitle">
+            Simulamos cómo vería el resumen de su orden mayorista.
+          </p>
+
+          <div style="margin-top:10px;display:flex;align-items:center;justify-content:space-between;gap:6px;">
+            <div>
+              <div style="font-size:0.85rem;margin-bottom:4px;">Número de orden</div>
+              <div class="order-code">
+                <span>#0001</span>
+              </div>
+            </div>
+            <div>
+              <div class="pill-status">
+                <span class="dot"></span>
+                <span>Pedido recibido</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-box" id="orderSummaryBox">
+            <!-- Resumen generado por JavaScript -->
+          </div>
+
+          <div style="margin-top:10px;display:flex;flex-direction:column;gap:8px;">
+            <button id="btnGoToPayment" class="btn-primary btn-full" type="button">
+              👉 Pagar con Mercado Pago
+            </button>
+            <button id="btnConfirmationBackHome" class="btn-secondary btn-full" type="button">
+              Volver al inicio
+            </button>
+          </div>
+
+          <p style="margin-top:8px;font-size:0.75rem;color:var(--text-soft);">
+            Haga clic en el botón para finalizar el pago de forma segura.
+          </p>
+        </div>
+      </section>
+
+      <!--
+        Vista 5: PAGO EXITOSO
+      -->
+      <section id="view-payment-success" class="hidden">
+        <div class="card card-success">
+          <div class="success-header">
+            <div class="success-icon">✓</div>
+            <h2 class="success-text-main">¡Pedido confirmado!</h2>
+            <p class="success-text-sub">
+              Tu pedido ha sido procesado correctamente en nuestro sistema.
+            </p>
+          </div>
+
+          <div class="success-info-box">
+            <div class="order-info-row">
+              <span class="label">Orden</span>
+              <span class="value">#0001</span>
+            </div>
+            <div class="order-info-row">
+              <span class="label">Total a pagar</span>
+              <span id="paymentAmountDisplay" class="value">$0</span>
+            </div>
+          </div>
+
+          <div class="success-important-note">
+            <span class="icon">⚠️</span>
+            <p>
+              <strong>¡Importante!</strong> Es necesario que te comuniques con nosotros haciendo clic en el botón de abajo para coordinar la entrega y recibir más detalles sobre tu pedido.
+            </p>
+          </div>
+
+          <div class="success-actions">
+            <a id="btnWhatsApp" class="btn-primary btn-full btn-whatsapp" href="#" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Hablar por WhatsApp ahora
+            </a>
+            <button id="btnPaymentBackHome" class="btn-secondary btn-full" type="button">
+              Volver al inicio
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal producto (estilo similar a referencia) -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+      <div class="modal">
+        <button id="btnModalClose" class="modal-close" type="button">✕</button>
+        <div class="modal-header">
+          <div id="modalProductTitle" class="modal-product-title">
+            Detalle del producto
+  </div>
+          <a href="#" class="modal-link" onclick="return false;">Ver detalles del producto</a>
+        </div>
+        <div class="modal-body">
+          <div class="modal-product-layout">
+            <div class="modal-product-image">
+              <img id="modalProductImage" src="" alt="Producto">
+            </div>
+            <div class="modal-product-details">
+              <div id="modalUnitPrice" class="modal-price-main">$0</div>
+              <div class="modal-min-text">min: 1u.</div>
+              <div class="modal-divider"></div>
+              <div id="modalTotalPrice" class="modal-total">$0</div>
+              <div class="modal-total-sub">Total incluye IVA</div>
+            </div>
+          </div>
+
+          <div class="modal-qty-controls">
+            <button id="btnModalMinus" class="qty-btn" type="button">−</button>
+            <div id="modalQtyDisplay" class="qty-display">1u</div>
+            <button id="btnModalPlus" class="qty-btn" type="button">+</button>
+          </div>
+
+          <button id="btnModalAdd" class="btn-modal-primary" type="button">
+            Agregar
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notificación simple al agregar al carrito -->
+    <div id="toast" class="toast hidden">
+      Producto agregado al carrito
+    </div>
+
+    <!-- Botón flotante de WhatsApp -->
+    <a href="https://wa.me/+5493416160956?text=Necesito%20ayuda%20para%20comprar%20por%20la%20web" 
+       class="whatsapp-float" 
+       target="_blank" 
+       rel="noopener noreferrer"
+       title="Necesito ayuda">
+      <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+      </svg>
+    </a>
+
+    <footer>
+      Piastri Helados - Todos los derechos reservados.
+    </footer>
+  </div>
+  <script src="app.js" defer></script>
+</body>
+</html>
