@@ -2,11 +2,11 @@
 // Datos simulados de catálogo
 // -------------------------------------------------------
 const CATALOG_DATA = {
-  monteviana: {
-    name: "La Monteviana",
+  montevideana: {
+    name: "La Montevideana",
     tagline: "Línea clásica pensada para kioscos y heladerías",
     logo: "src/images/LaMontevideana.png",
-    bannerBg: "src/images/local-monte.jpg",
+    bannerBg: "src/images/local-monte2.jpg",
     products: [
       // PALITOS Y BOMBONES (Cajas)
       { id: "lm_s1", name: "Summun 3 Mix Frutilla, Manzana, Ananá", pack: "Caja x 20u", price: 3200, category: "Helados", unitLabel: "caja", image: "src/images/products/summun3mix.png" },
@@ -80,7 +80,7 @@ const CATALOG_DATA = {
     name: "Com-Com",
     tagline: "Postres premium y paletas de alto valor",
     logo: "src/images/com-com.svg",
-    bannerBg: "src/images/local-comcom.png",
+    bannerBg: "src/images/local-comcom2.webp",
     products: [
       {
         id: "om1",
@@ -211,6 +211,75 @@ const cartTitle = document.getElementById("cartTitle");
 const cartSummaryTotal = document.getElementById("cartSummaryTotal");
 const cartSummaryMissing = document.getElementById("cartSummaryMissing");
 const cartProgressBar = document.getElementById("cartProgressBar");
+
+// -------------------------------------------------------
+// Carrusel de imágenes
+// -------------------------------------------------------
+function initCarousel() {
+  const track = document.getElementById("carouselTrack");
+  const slides = Array.from(track.children);
+  const nextButton = document.getElementById("carouselNext");
+  const prevButton = document.getElementById("carouselPrev");
+  const indicatorsContainer = document.getElementById("carouselIndicators");
+
+  let currentIndex = 0;
+  let autoPlayInterval;
+
+  // Crear indicadores
+  slides.forEach((_, index) => {
+    const indicator = document.createElement("div");
+    indicator.classList.add("carousel-indicator");
+    if (index === 0) indicator.classList.add("active");
+    indicator.addEventListener("click", () => goToSlide(index));
+    indicatorsContainer.appendChild(indicator);
+  });
+
+  const indicators = Array.from(indicatorsContainer.children);
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+    indicators.forEach((ind, index) => {
+      ind.classList.toggle("active", index === currentIndex);
+    });
+  }
+
+  function goToSlide(index) {
+    currentIndex = index;
+    updateCarousel();
+    resetAutoPlay();
+  }
+
+  function nextSlide() {
+    currentIndex = (currentIndex + 1) % slides.length;
+    updateCarousel();
+  }
+
+  function prevSlide() {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    updateCarousel();
+  }
+
+  function startAutoPlay() {
+    autoPlayInterval = setInterval(nextSlide, 5000);
+  }
+
+  function resetAutoPlay() {
+    clearInterval(autoPlayInterval);
+    startAutoPlay();
+  }
+
+  nextButton.addEventListener("click", () => {
+    nextSlide();
+    resetAutoPlay();
+  });
+
+  prevButton.addEventListener("click", () => {
+    prevSlide();
+    resetAutoPlay();
+  });
+
+  startAutoPlay();
+}
 
 // -------------------------------------------------------
 // Modal de producto
@@ -802,6 +871,7 @@ function initNavigation() {
 // -------------------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
+  initCarousel();
   initCategoryEvents();
   updateCartBadge();
   renderCart();
